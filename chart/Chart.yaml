@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 name: mcmc
+version: 0.1.0
 metadata:
   name: minecraft-server
   annotations:
