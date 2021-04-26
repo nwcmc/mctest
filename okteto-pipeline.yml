@@ -1,0 +1,2 @@
+deploy:
+  - helm upgrade --install mcmc chart --set tag=${OKTETO_GIT_COMMIT}
