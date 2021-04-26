@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server
+  annotations:
+    kubesailEditorUid: bd59fd89-ba30-42a5-aa3e-59c38c09371c
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      volumes:
+        - name: world
+          persistentVolumeClaim:
+            claimName: minecraft-world
+      containers:
+        - name: minecraft
+          image: itzg/minecraft-server
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: world
+              mountPath: /data
+          ports:
+            - name: game-port
+              containerPort: 25565
+              hostPort: 25565
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 1
+              memory: 2Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minecraft-world
+  labels:
+    app: minecraft
+  annotations:
+    kubesailEditorUid: d19fb82f-cd21-4d11-88d3-df2b07814054
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
