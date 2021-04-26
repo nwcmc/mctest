@@ -33,7 +33,6 @@ spec:
           ports:
             - name: game-port
               containerPort: 25565
-              hostPort: 25565
           resources:
             requests:
               cpu: 50m
